@@ -33,8 +33,12 @@ const SERVICES_TEXT =
   '• Ремонт под ключ (всё включено) — от 8000 ₽/м²\n\n' +
   'Точная стоимость зависит от объёма и сложности работ — рассчитаем после осмотра.';
 
+// Без parse_mode: в тексте есть "_" (в username) и "-" (в телефоне) —
+// в legacy Markdown-разметке Telegram одиночное подчёркивание считается
+// незакрытым тегом italic и ломает отправку ("can't find end of entity").
+// Поэтому это сообщение отправляется обычным текстом, без форматирования.
 const CONTACTS_TEXT =
-  '📞 *Контакты*\n\n' +
+  '📞 Контакты\n\n' +
   'Мастер: Иван Иванов\n' +
   'Телефон: +7 900 000-00-00\n' +
   'Telegram: @master_otdelka\n' +
@@ -212,7 +216,7 @@ bot.on('message', (msg) => {
   }
 
   if (text === '📞 Контакты') {
-    bot.sendMessage(chatId, CONTACTS_TEXT, { parse_mode: 'Markdown' });
+    bot.sendMessage(chatId, CONTACTS_TEXT);
     return;
   }
 
